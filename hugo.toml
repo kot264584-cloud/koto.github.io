@@ -1,7 +1,7 @@
 baseURL = "https://kot264584-cloud.github.io/koto.github.io/"
 defaultContentLanguage = "zh-cn"
 locale = "zh-cn"
-title = "Koto | Technical Artist"
+title = "Koto | 技术美术"
 theme = "PaperMod"
 enableRobotsTXT = true
 hasCJKLanguage = true
