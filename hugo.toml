@@ -40,6 +40,10 @@ responsiveImages = true
 name = "github"
 url = "https://github.com/kot264584-cloud"
 
+[[params.socialIcons]]
+name = "pixiv"
+url = "https://www.pixiv.net/users/84922710"
+
 [[menus.main]]
 name = "Art"
 url = "/art/"
