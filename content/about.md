@@ -11,9 +11,9 @@ hideMeta: true
 
 Technical Artist / 2D Artist
 
-关注二次元角色造型、实时渲染与 Shader 效果。
+广东工业大学 28届计算机科学与技术专业 微信:w13530133411; QQ: 2727243919; 手机号:13530133411
 
 - GitHub: [kot264584-cloud](https://github.com/kot264584-cloud)
 - Pixiv: [pixiv.net/users/84922710](https://www.pixiv.net/users/84922710)
 
-<!-- 在这里补充个人介绍、教育经历、技能栈、项目经历与联系方式。 -->
+<!-- 信息栏 -->
