@@ -1,0 +1,83 @@
+baseURL = "https://kot264584-cloud.github.io/koto.github.io/"
+defaultContentLanguage = "zh-cn"
+locale = "zh-cn"
+title = "Koto | Technical Artist"
+theme = "PaperMod"
+enableRobotsTXT = true
+hasCJKLanguage = true
+
+[params]
+description = "Koto 的个人作品集，记录 2D 美术、技术美术与图形学学习。"
+keywords = ["Technical Artist", "TA", "Shader", "二次元", "角色设计", "作品集"]
+defaultTheme = "dark"
+ShowReadingTime = true
+ShowShareButtons = false
+ShowCodeCopyButtons = true
+ShowBreadCrumbs = true
+ShowToc = true
+TocOpen = false
+mainSections = ["art", "technical", "notes"]
+
+[params.label]
+text = "Koto"
+
+[params.footer]
+text = "Technical Artist / 2D Artist"
+
+[params.assets]
+favicon = "images/favicon.svg"
+favicon16x16 = "images/favicon.svg"
+favicon32x32 = "images/favicon.svg"
+apple_touch_icon = "images/favicon.svg"
+safari_pinned_tab = "images/favicon.svg"
+theme_color = "#111214"
+
+[params.cover]
+linkFullImages = true
+responsiveImages = true
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/kot264584-cloud"
+
+[[menus.main]]
+name = "Art"
+url = "/art/"
+weight = 10
+
+[[menus.main]]
+name = "Technical"
+url = "/technical/"
+weight = 20
+
+[[menus.main]]
+name = "Notes"
+url = "/notes/"
+weight = 30
+
+[[menus.main]]
+name = "About"
+url = "/about/"
+weight = 40
+
+[[menus.main]]
+name = "Search"
+url = "/search/"
+weight = 50
+
+[markup]
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.goldmark.extensions.passthrough]
+enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)'], ['$', '$']]
+
+[markup.highlight]
+noClasses = false
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]

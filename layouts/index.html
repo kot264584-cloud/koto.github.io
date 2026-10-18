@@ -1,0 +1,108 @@
+{{ define "main" }}
+<section class="home-hero">
+    <div>
+        <p class="hero-kicker">Technical Artist / 2D Artist</p>
+        <h1>Koto</h1>
+        <p class="hero-lede">
+            关注二次元角色造型、实时渲染与 Shader 效果。这里整理美术作品、技术 Demo 与图形学笔记。
+        </p>
+        <div class="hero-actions">
+            <a class="hero-action primary" href="{{ "art/" | relLangURL }}">
+                浏览作品
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7"></path>
+                    <path d="M7 7h10v10"></path>
+                </svg>
+            </a>
+            <a class="hero-action secondary" href="{{ "technical/" | relLangURL }}">
+                技术 Demo
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7"></path>
+                    <path d="M7 7h10v10"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <aside class="hero-focus" aria-label="主要方向">
+        <p class="hero-focus-label">Focus</p>
+        <ul>
+            <li><span>01</span>Character Design</li>
+            <li><span>02</span>Real-time Rendering</li>
+            <li><span>03</span>Shader / Material</li>
+        </ul>
+    </aside>
+</section>
+
+<section class="home-sections" aria-label="站点栏目">
+    <a class="home-card" href="{{ "art/" | relLangURL }}">
+        <span class="home-card-index">01 / ART</span>
+        <span class="home-card-title">
+            美术作品
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+            </svg>
+        </span>
+        <span class="home-card-description">角色设计、线稿与插画</span>
+    </a>
+    <a class="home-card" href="{{ "technical/" | relLangURL }}">
+        <span class="home-card-index">02 / TECHNICAL</span>
+        <span class="home-card-title">
+            技术 Demo
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+            </svg>
+        </span>
+        <span class="home-card-description">Shader、材质与实时渲染</span>
+    </a>
+    <a class="home-card" href="{{ "notes/" | relLangURL }}">
+        <span class="home-card-index">03 / NOTES</span>
+        <span class="home-card-title">
+            图形笔记
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+            </svg>
+        </span>
+        <span class="home-card-description">图形学与 TA 学习记录</span>
+    </a>
+    <a class="home-card" href="{{ "about/" | relLangURL }}">
+        <span class="home-card-index">04 / ABOUT</span>
+        <span class="home-card-title">
+            关于
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7"></path>
+                <path d="M7 7h10v10"></path>
+            </svg>
+        </span>
+        <span class="home-card-description">简介、联系方式与简历</span>
+    </a>
+</section>
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- with first 3 $pages }}
+<section class="home-latest" aria-labelledby="latest-heading">
+    <div class="home-latest-header">
+        <h2 id="latest-heading">Latest</h2>
+        <a href="{{ "notes/" | relLangURL }}">查看全部</a>
+    </div>
+    <div class="latest-list">
+        {{- range . }}
+        <a class="latest-item" href="{{ .RelPermalink }}">
+            <span class="latest-type">{{ .Type }}</span>
+            <span class="latest-title">{{ .Title }}</span>
+            <time class="latest-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+        </a>
+        {{- end }}
+    </div>
+</section>
+{{- end }}
+{{ end }}
