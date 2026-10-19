@@ -1,17 +1,20 @@
 ---
 title: "HLSL 与 UE Shader 基础"
-date: 2026-10-17
+date: 2026-10-19
 draft: false
 description: "HLSL 与 UE Shader 基础"
+url: "/notes/hlsl-basics/"
 tags: ["HLSL", "Shader", "UE"]
 math: true
 ShowToc: true
 ---
 
+# UE核心shader语言----HLSL
+
 ## 有关shader语言
-### 1.什么是shader(着色器)语言
+    ### 1.什么是shader(着色器)语言
         . 这是一种用于GPU处理上的特殊语言
-### 2.为什么存在shader语言
+    ### 2.为什么存在shader语言
         . 首先简单了解一下渲染管线的基础流程:
         > CPU处理渲染对象并打包->GPU接收打包数据+数据转换->光栅化->片元处理(上色及抗锯齿)->输出合并
         . 再聊聊CPU和GPU
@@ -19,11 +22,11 @@ ShowToc: true
         > GPU->拥有海量简单核心;适用于处理逻辑性弱但重复性强的问题.
         -----------------------------------------------------------
         那么,针对GPU处理阶段存在的大量顶点数据处理问题,对应的设计了"shader语言"去专门调用,管理
-### 3. 常见的几种shader语言
+    ### 3. 常见的几种shader语言
         . HLSL:由微软研发,常用于研发DiectX----UE核心语言
         . GLSL:常用于OpenGL和Vulkan
         . MSL:苹果研发
-### 4. shader的主要应用场景
+    ### 4. shader的主要应用场景
         1. 基础实时渲染:
         > 这是shader的最本职工作,主要做顶点变换(模型3D坐标投影),光照计算,纹理映射
         2. 非写实渲染(例如常见的三渲二):
@@ -37,8 +40,8 @@ ShowToc: true
 ---
     
 ## HLSL与C++
-### 什么是HLSL
-* #### HLSL是一种类C语言
+    ### 什么是HLSL
+    * #### HLSL是一种类C语言
         > 语法: HLSL支持C++中的struct,函数,循环与条件判断   
         > 执行: 在执行逻辑上,更像Verilog
     * #### HLSL的特点
@@ -221,8 +224,8 @@ ShowToc: true
 
 ## 示例展示
 ### 1.做一个简单的动态网格圆
-![alt text](img-01.webp)
 
+![](<image-2.png>)
 ### 图中涉及代码
 #### 1. 如何画一个中心坐标为pos,大小可控的圆
 ```glsl
@@ -258,24 +261,33 @@ return float4(color*mask,1.0);
 ```
 
 ### 2.制作一面砖墙
-![alt text](img-02.webp)
+
+![](<image-4.png>)
 
 ### shader节点代码设计
 ```glsl
+
 //1.制作一个长宽可控的长方形网格
 float2 tmp=frac(uv*grid);
 float2 tex=frac(tmp+offtset);
+
 //2.将网格内的uv坐标值限定在[0,0.5]之内
 float2 centerTex=abs(tex,0.5);
+
 //3. 划出内嵌长方形范围
 float2 mk2D=step(centerTex,dim*0.5);
+
 //4. 真值判断(整合x和y方向读取的边框条,只有x,y都为1才显示1)
 float mask=mk2D.x*mk2D.y;
+
 //赋值颜色
 float3 color=lerp(colorBehind,colorFront,mask);
+
 //输出
 return(color);
+
 ```
+
 #### 代码详解
 1. 可控网格输出:分别操作frac内uv的x,y赋值即可;
 2. **限定坐标在[0,0.5]**:实际是控制在[-0.5,0.5],为了设计一个坐标原点在中心,方便后续计算(类推可设计各种形状);
@@ -315,13 +327,16 @@ return(color);
 ### MatCap光照模型(各向异性高光)(风格化)
 1. **基础思想** :将复杂的光照效果预烘焙进一个球体贴图中,然后根据物体法线信息,投射进纹理球中直接读取颜色信息
 2. **计算** :
+
 ```glsl
 vec3 normalVS=TransformWorldToViewNormal(input.normalWS,true);//将模型的法线信息转换到视图空间
 
 vec2 matcupUV=(normalVS.xy*0.5+0.5);//将法线坐标映射到uv坐标
 
 vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
+
 ```
+
 3. **优缺点** :
     * 优点:开销低;风格统一;简单
     * 缺点:缺乏物理准确性;反射效果与环境变化无关
@@ -354,6 +369,7 @@ vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
     * 缺点:
         * 模型内部线条难以区分;
         * 远处的物体线条易挤在一起,增加抗锯齿开销;
+
 #### 三.进阶改进方案:平滑法线
 1. **问题分析**:对于各种模型,若直接用建模时的法线,在硬表面转角处都会存在 **线条断裂** 现象
 2. **解决方案** :
@@ -364,18 +380,25 @@ vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
 ## 认识常用重要节点
 
 ### 一. Texture Sample(特效贴图)
-![alt text](img-03.webp)    
- **各接点含义** :
+
+
+![](<image-6.png>)
+
+
+ * **各接点含义** :
     * **UVs**:规定贴图附着在模型的哪个地方(默认输入TexCoord[0]:默认范围值为[0,1]渐变的UV坐标);
     * **Apply View MipBias** :控制Mipmap(纹理分级细化)的偏移(用的少)
 ### 二.自定义节点
 #### 1. M_Mask_Adjust(调节Mask的Smooth和Offset)
-![alt text](img-04.webp)
+
+![](<image-3.png>)
 
 * Smooth(边缘锐利度):数值越大越锐,过渡越快;
 * Offset(偏移):遮罩偏移;
 #### 2. M_Mask(混合颜色)
-![alt text](img-05.webp)
+
+![](<image-5.png>)
+
 * BaseColor:混合颜色1;
 * Color:混合颜色2;
 * Mode:混合模式,0为用Color替换BaseColor;1为正片叠底;
@@ -419,7 +442,8 @@ vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
 ### UE渲染具体实现步骤
 
 #### 整体节点连接
-![alt text](img-06.webp)
+
+![](<image-8.png>)
 
 #### 1.目标分析:
 * SDF贴图是记录了脸部各处出现阴影的光影阈值的贴图
@@ -436,7 +460,7 @@ vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
 
 ---
 #### 效果展示
-![alt text](img-07.webp)
+![](<image-9.png>)
 ---
 
 ## 二.有关实现刘海阴影
@@ -444,6 +468,8 @@ vec3 matcup_color=texture2D(MatCup_Texture,matcupUV);//读取颜色信息
     * 基础模型对阴影部分做了额外的建模面
     * 可以尝试通过深度判断,判断该模型底层是否为皮肤,从而控制其不透明度;
 ### 材质节点连接:
+
+![](<Pasted image 20261019120631.png>)
 
 ---
 ### HLSL代码实现:
@@ -468,6 +494,10 @@ float depthMask=1.0-saturate(sceneDepth/Depth);
 //输出
 return float4(finalColor,depthMask);
 ```
+### 实现效果
+
+![](<Pasted image 20261019120703.png>)
+
 
 
 

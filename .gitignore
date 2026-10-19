@@ -9,6 +9,7 @@ resources/_gen/
 Thumbs.db
 .idea/
 .vscode/
+.obsidian/
 
 # Local tooling
 node_modules/
