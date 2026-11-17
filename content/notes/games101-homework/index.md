@@ -1,9 +1,10 @@
 ---
-title: "GAMES101 作业 1-3 总结"
+title: GAMES101 作业 1-3 总结
 date: 2026-10-17
 draft: false
-description: "GAMES101 作业 1-3 总结"
-tags: ["GAMES101", "C++"]
+description: GAMES101 作业 1-3 总结
+tags:
+  - GAMES101
 math: true
 ShowToc: true
 ---
